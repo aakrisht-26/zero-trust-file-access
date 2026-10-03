@@ -2,8 +2,6 @@
 
 Token-based file access over plain Java sockets. An auth server hands out short-lived signed tokens, and a file server checks one on every request before it opens the file. It only needs the JDK, no other dependencies.
 
-It's a demo, so don't put real files behind it. See [Known gaps](#known-gaps) for what's missing.
-
 ## How it works
 
 There are three programs.
@@ -101,15 +99,3 @@ files/        what the file server serves
 keys/         generated key pair, not committed
 ```
 
-## Known gaps
-
-Things a real system would need that this one skips:
-
-- No TLS. Passwords and tokens cross the network in clear text.
-- The role is inside the token but nothing checks it. alice and bob can read exactly the same files.
-- File names aren't validated, so anyone with a valid token can ask for `../keys/private.key` and get it. More `../` reaches anything else on the drive that the server process can read.
-- Both servers listen on all network interfaces, and the logins are printed above. Don't leave them running on a network you don't trust.
-- The nonce is never recorded, so a captured token can be replayed until it expires.
-- Each server handles one connection at a time.
-- The file server sends files as text and the client only prints the first line.
-- Both servers read from the same `keys/` folder, so the file server can see the private key too. It should only have the public one.
