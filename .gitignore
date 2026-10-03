@@ -1,0 +1,5 @@
+# build output
+*.class
+
+# RSA key pair, generated on first run
+keys/*.key
